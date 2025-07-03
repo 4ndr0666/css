@@ -1,0 +1,147 @@
+/* ==UserStyle==
+@name         GitHub adaptive content
+@namespace    userstyles.world/user/vednoc
+@description  Adaptive header/nav/body content for GitHub.
+@author       vednoc <vednoc@pm.me> (https://github.com/vednoc)
+@version      0.3.0
+@license      MIT
+@preprocessor stylus
+
+@var checkbox shortNav 'Enable short navbar style' 1
+@var checkbox altNav 'Enable alternative navbar style' 0
+==/UserStyle== */
+
+t = transparent
+i = !important
+
+$reset = @block {
+    margin-inline: auto
+    max-width: calc(1280px - 32px)
+}
+
+$resetFull = @block {
+    padding-inline: 0 i
+    margin-inline: auto
+    max-width: calc(1280px - 32px)
+}
+
+@-moz-document domain('github.com') {
+    @media (min-width: 768px) {
+        body:not(.full-width):not(.notifications-v2):not(.height-full) {
+            // Navbar.
+            .js-header-wrapper {
+                padding-inline: 1rem if shortNav
+                background-color: var(--color-header-bg) unless altNav
+
+                if altNav {
+                    --color-header-text: var(--color-fg-muted)
+                    --color-header-logo: var(--color-fg-default)
+                    --color-header-bg: var(--color-canvas-default)
+                    --color-header-search-bg: var(--color-canvas-inset)
+                    --color-header-search-border: var(--color-border-default)
+                    ::placeholder { color: var(--color-fg-muted) }
+                }
+
+                // Logged in/out headers.
+                > .Header, > .Header-old {
+                    { $resetFull } if shortNav
+                    background: none
+                    border-bottom: 1px solid var(--color-border-muted) if altNav
+                }
+
+                // Fixes discrepancies in different places.
+                > .Header-old > [class*='container-'] {
+                    { $resetFull } if shortNav
+                }
+            }
+
+            // Repository page header.
+            #repository-container-header.hide-full-screen {
+                padding-inline: 1rem
+
+                // Hide header background on light themes.
+                &[style*='page-header-bg'] { background: none i }
+
+                > div, > nav {
+                    { $resetFull }
+                }
+            }
+
+            // Alerts of various kinds.
+            #js-flash-container > div > div,
+            #notification-shelf > div,
+            // Sponsors alerts.
+            x-banner,
+            x-banner + div[style],
+            // Issues dashboard page.
+            #issues_dashboard.container-lg,
+            // Actions page. @upstream
+            split-page-layout,
+            // Footer width.
+            footer.width-full {
+                { $resetFull }
+            }
+
+            // Remove extra space. @upstream
+            button.js-flash-close > svg { margin-right: 0 }
+
+            // Organization page header.
+            .pagehead.orghead {
+                padding-inline:  1rem
+
+                // Content.
+                .container-lg,
+                .container-xl,
+                // Navigation.
+                nav ul, nav {
+                    { $resetFull }
+                }
+
+                // Tab content.
+                + .container-lg {
+                    max-width: unset
+
+                    > div {
+                        { $resetFull }
+                    }
+                }
+            }
+
+            // Main content.
+            main {
+                // More consistent padding.
+                .px-lg-5, .px-md-4 { padding-inline: 1rem i }
+
+                // Tabbed navigation on profile page.
+                .position-sticky > .container-xl { padding-inline: 0 i }
+            }
+        }
+    }
+}
+
+@-moz-document regexp('https?://github.com/sponsors/.+') {
+    main > div {
+        // Alerts.
+        &:not(.container-lg) {
+            > .container-lg {
+                { $resetFull }
+            }
+
+            // Add padding to "sponsors matching fund" bar.
+            &.flash + [style] { padding-inline: 1rem }
+        }
+
+        // Page content.
+        &.container-lg {
+            padding-inline: 1rem
+            max-width: 1280px
+        }
+    }
+}
+
+@-moz-document regexp('https?://github.com/.+/.+/(releases|tags)$') {
+    main {
+        .col-11 { width: 100% }
+        .col-md-9 { width: 83.3333333% }
+    }
+}
