@@ -40,8 +40,8 @@ jobs:
               "selector-pseudo-element-no-unknown": [true, {"severity":"warning"}],
               "string-no-newline": [true, {"severity":"warning"}],
               "unit-no-unknown": [true, {"severity":"warning"}],
-              "alpha-value-notation": false,
-              "value-no-vendor-prefix": false
+              "alpha-value-notation": null,
+              "value-no-vendor-prefix": null,
             }
           }
           CFG
