@@ -1,3 +1,4 @@
+# .github/workflows/stylelint.yml
 name: Lint Stylus with Stylelint
 
 on:
@@ -8,20 +9,20 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+
     steps:
-      # 1) Check out your code
       - uses: actions/checkout@v3
 
-      # 2) Provision Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # 3) Install your Stylelint deps (uses package.json only)
-      - name: Install dependencies
-        run: npm install
+      - name: Bootstrap npm & install Stylelint
+        run: |
+          npm init -y
+          npm install --save-dev stylelint stylelint-processor-stylus postcss-styl
 
-      # 4) Run Stylelint over all stylus/us o/css files
       - name: Run Stylelint
-        run: npx stylelint "**/*.{styl,uso,css}" --config stylelint.config.json
+        run: |
+          npx stylelint "**/*.{styl,uso,css}" --config stylelint.config.json
