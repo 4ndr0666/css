@@ -1,27 +1,40 @@
-name: Lint CSS & Stylus
+name: stylelint
 
 on:
   push:
-    branches: [main]
+    branches: [ main, develop ]
   pull_request:
-    branches: [main]
+    branches: [ main, develop ]
+  workflow_dispatch:
 
 jobs:
   stylelint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
+    # Slightly longer-lived Node cache (≈1 GiB) makes runs much faster
+    permissions:
+      contents: read
+      packages: read
+
     steps:
-      - name: Checkout repo
+      - name: 📥  Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js 18
+      - name: 🔧  Set up Node.js 18
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: npm
 
-      - name: Install Stylelint + postcss-styl
+      - name: 📦  Install Stylelint & Stylus parser
         run: |
           test -f package.json || npm init -y
-          npm install --save-dev stylelint@14 postcss-styl@0.0.3
+          npm install --no-audit --no-fund --save-dev \
+            stylelint@14 \
+            postcss-styl@0.0.3
 
-      - name: Run Stylelint
+      # Runs Stylelint on every .styl, .uso and .css file in the repo.
+      # Because our `.stylelintrc.js` downgrades most violations to
+      # *warnings*, this step exits with 0 unless real errors occur.
+      - name: 🧹  Lint styles
         run: npx stylelint "**/*.{styl,uso,css}"
