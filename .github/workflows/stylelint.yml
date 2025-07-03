@@ -2,30 +2,35 @@ name: stylelint
 
 on:
   push:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [main, develop]
+    branches:
+      - main
+      - develop
   workflow_dispatch:
 
 jobs:
-  stylelint:
+  lint:
+    name: Lint CSS & Stylus
     runs-on: ubuntu-24.04
 
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v3
 
-      - name: 🔧 Set up Node 18
+      - name: 🔧 Set up Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: 18          # no cache → lock-file not required
+          node-version: '18'
 
-      - name: 📦 Install Stylelint & Stylus parser
+      - name: 📦 Install Stylelint + Stylus parser
         run: |
           test -f package.json || npm init -y
           npm install --no-audit --no-fund --save-dev \
             stylelint@14 \
             postcss-styl@0.0.3
 
-      - name: 🧹 Lint styles
+      - name: 🧹 Run Stylelint
         run: npx stylelint "**/*.{styl,uso,css}"
