@@ -1,17 +1,21 @@
-/** .stylelintrc.js */
 module.exports = {
-  // Always use the Stylus parser, no matter the extension
   customSyntax: 'postcss-styl',
-
   rules: {
-    /* Disable the rule that’s flagging the lone “@” tokens */
-    'at-rule-no-unknown': null,
-
-    /* — keep everything else you had before — */
+    'at-rule-no-unknown': [true, {
+      ignoreAtRules: ['extend', 'extends', 'css', 'block', '-moz-document']
+    }],
     'function-no-unknown': [true, {
       ignoreFunctions: [
-        'gridTemplate', 'gridTemplateColumns', 'description', 'noDescription',
-        'itemCard', 'gap', 'overflow', 'textOverflow', 'fontStyle'
+        'gridTemplate',
+        'gridTemplateColumns',
+        'description',
+        'noDescription',
+        'itemCard',
+        'gap',
+        'overflow',
+        'textOverflow',
+        'fontStyle',
+        'has'
       ]
     }],
     'declaration-block-trailing-semicolon': null,
@@ -28,7 +32,10 @@ module.exports = {
     'keyframe-declaration-no-important': [true, { severity: 'warning' }],
     'media-feature-name-no-unknown': [true, { severity: 'warning' }],
     'no-invalid-double-slash-comments': [true, { severity: 'warning' }],
-    'property-no-unknown': [true, { severity: 'warning' }],
+    'property-no-unknown': [true, {
+      ignoreProperties: ['i', 't', 'div'],
+      severity: 'warning'
+    }],
     'selector-pseudo-class-no-unknown': [true, { severity: 'warning' }],
     'selector-pseudo-element-no-unknown': [true, { severity: 'warning' }],
     'string-no-newline': [true, { severity: 'warning' }],
