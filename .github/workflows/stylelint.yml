@@ -9,19 +9,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      # 1) checkout your code
+      # 1) Check out your code
       - uses: actions/checkout@v3
 
-      # 2) ensure Node is available
+      # 2) Provision Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # 3) install your devDependencies from package.json
+      # 3) Install your Stylelint deps (uses package.json only)
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      # 4) run Stylelint on all your Stylus and CSS files
+      # 4) Run Stylelint over all stylus/us o/css files
       - name: Run Stylelint
         run: npx stylelint "**/*.{styl,uso,css}" --config stylelint.config.json
