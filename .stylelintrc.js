@@ -1,9 +1,36 @@
 module.exports = {
   customSyntax: 'postcss-styl',
   rules: {
+    // allow Stylus at-rules
     'at-rule-no-unknown': [true, {
-      ignoreAtRules: ['extend', 'extends', 'css', 'block', '-moz-document']
+      ignoreAtRules: [
+        // Stylus conditionals & loops
+        'if',
+        'else',
+        'unless',
+        'for',
+        'each',
+        'while',
+        // Stylus mixins & includes
+        'mixin',
+        'include',
+        // Stylus functions & other directives
+        'return',
+        'function',
+        'extends',
+        'extend',
+        'charset',
+        'keyframes',
+        'media',
+        'supports',
+        // PostCSS or experimental
+        'css',
+        'block',
+        '-moz-document'
+      ]
     }],
+
+    // allow your custom helper functions
     'function-no-unknown': [true, {
       ignoreFunctions: [
         'gridTemplate',
@@ -18,6 +45,8 @@ module.exports = {
         'has'
       ]
     }],
+
+    // stylistic rules (warnings)
     'declaration-block-trailing-semicolon': null,
     'block-no-empty': [true, { severity: 'warning' }],
     'color-no-invalid-hex': [true, { severity: 'warning' }],
@@ -40,6 +69,8 @@ module.exports = {
     'selector-pseudo-element-no-unknown': [true, { severity: 'warning' }],
     'string-no-newline': [true, { severity: 'warning' }],
     'unit-no-unknown': [true, { severity: 'warning' }],
+
+    // disable some strict rules
     'alpha-value-notation': null,
     'value-no-vendor-prefix': null
   }
