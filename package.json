@@ -1,8 +1,0 @@
-{
-  "name": "4ndr0tools-github-css",
-  "private": true,
-  "devDependencies": {
-    "stylelint": "^14.22.1",
-    "postcss-styl": "0.0.3"
-  }
-}
