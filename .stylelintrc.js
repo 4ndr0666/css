@@ -1,0 +1,52 @@
+/** @type {import('stylelint').Config} */
+module.exports = {
+  customSyntax: 'postcss-styl',
+  rules: {
+    // Stylus control-flow
+    'at-rule-no-unknown': [true, {
+      ignoreAtRules: [
+        'extend', 'extends', 'css', 'block', '-moz-document',
+        'if', 'else', 'unless', 'each', 'for',
+      ],
+    }],
+
+    // Stylus helpers & mixins
+    'function-no-unknown': [true, {
+      ignoreFunctions: [
+        'gridTemplate', 'gridTemplateColumns',
+        'description', 'noDescription', 'itemCard',
+        'gap', 'overflow', 'textOverflow', 'fontStyle',
+        'has', 'unit', 'darken', 'lighten',
+      ],
+    }],
+
+    // Stylus-generated pseudo-properties
+    'property-no-unknown': [true, {
+      severity: 'warning',
+      ignoreProperties: ['i', 't', 'div'],
+    }],
+
+    /* core rules --------------------------------------------------------- */
+    'alpha-value-notation': null,
+    'value-no-vendor-prefix': null,
+    'declaration-block-trailing-semicolon': null,
+
+    'block-no-empty': [true, { severity: 'warning' }],
+    'color-no-invalid-hex': [true, { severity: 'warning' }],
+    'declaration-block-no-duplicate-properties': [true, {
+      ignore: ['consecutive-duplicates-with-different-values'],
+      severity: 'warning',
+    }],
+    'declaration-block-no-shorthand-property-overrides': [true, { severity: 'warning' }],
+    'font-family-no-duplicate-names': [true, { severity: 'warning' }],
+    'function-calc-no-unspaced-operator': [true, { severity: 'warning' }],
+    'function-linear-gradient-no-nonstandard-direction': [true, { severity: 'warning' }],
+    'keyframe-declaration-no-important': [true, { severity: 'warning' }],
+    'media-feature-name-no-unknown': [true, { severity: 'warning' }],
+    'no-invalid-double-slash-comments': [true, { severity: 'warning' }],
+    'selector-pseudo-class-no-unknown': [true, { severity: 'warning' }],
+    'selector-pseudo-element-no-unknown': [true, { severity: 'warning' }],
+    'string-no-newline': [true, { severity: 'warning' }],
+    'unit-no-unknown': [true, { severity: 'warning' }],
+  },
+};
