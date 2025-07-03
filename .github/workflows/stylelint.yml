@@ -1,0 +1,17 @@
+name: “Lint Stylus with Stylelint”
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          npm install --save-dev stylelint stylelint-processor-stylus postcss-styl
+      - name: Run Stylelint
+        run: |
+          npx stylelint "**/*.{styl,uso}" --config stylelint.config.json

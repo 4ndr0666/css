@@ -1,0 +1,598 @@
+/* ==UserStyle==
+@name         4ndr0tools - GitHub Unified Theme
+@namespace    https://www.github.com/4ndr0666
+@description  Consolidated GitHub adaptive nav, dark theme, repo grid, and selected-tab color
+@author       4ndr0666
+@version      1.0.0
+@license      CC0-1.0
+@preprocessor uso
+@var checkbox shortNav "Enable short navbar style" 1
+@var checkbox altNav "Enable alternative navbar style" 0
+@advanced color base-color "Tab color" #4183C4
+@var select starNewDesign "⭐ Star New Design" ["Enabled", "Disabled"]
+@var checkbox hideStarText "  💬 Hide Text" 1
+@var checkbox dropDownMenu "  ⬇️ Hide Drop Down Menu" 0
+@var select resTap "📚 Respasatories Tap" ["Enabled", "Disabled"]
+@var checkbox fullDescription "  💬 Full Description" 0
+@var checkbox resNoDescription "  💬 Placeholder 'No Description'" 0
+@var checkbox showRepository "  📗 Show Repository Icon" 1
+@var checkbox hideForked "  🍴 Hide Forked Text" 0
+@var checkbox hideTopics "  🌍 Hide Topics" 1
+@var checkbox hideHelp "  🆘 Hide Help Wanted" 1
+@var checkbox hideLicense "  🪪 Hide License" 1
+@var select starsTap "⭐ Stars Tap" ["Enabled", "Disabled"]
+@var checkbox stNoDescription "  💬 Placeholder 'No Description'" 0
+@var checkbox stHideSponsors "  💵 Hide Sponsors" 1
+@var checkbox stHideAuthor "  🖊️ Hide Author" 1
+@var select searchPage "🔎 Search Page" ["Enabled", "Disabled"]
+@var checkbox spHideSponsors "  💵 Hide Sponsors" 1
+@var checkbox spHideTopics "  🌍 Hide Topics" 1
+@var checkbox spHideUpdate "  💬 Hide Update Text" 1
+@var checkbox spfullDescription "  💬 Full Description" 1
+@var checkbox spHideHelp "  🆘 Hide Help Wanted" 1
+==/UserStyle== */
+t = transparent
+i = !important
+
+$reset = @block {
+    margin-inline: auto
+    max-width: calc(1280px - 32px)
+}
+
+$resetFull = @block {
+    padding-inline: 0 i
+    margin-inline: auto
+    max-width: calc(1280px - 32px)
+}
+
+@-moz-document domain('github.com') {
+    @media (min-width: 768px) {
+        body:not(.full-width):not(.notifications-v2):not(.height-full) {
+            // Navbar.
+            .js-header-wrapper {
+                padding-inline: 1rem if shortNav
+                background-color: var(--color-header-bg) unless altNav
+
+                if altNav {
+                    --color-header-text: var(--color-fg-muted)
+                    --color-header-logo: var(--color-fg-default)
+                    --color-header-bg: var(--color-canvas-default)
+                    --color-header-search-bg: var(--color-canvas-inset)
+                    --color-header-search-border: var(--color-border-default)
+                    ::placeholder { color: var(--color-fg-muted) }
+                }
+
+                // Logged in/out headers.
+                > .Header, > .Header-old {
+                    { $resetFull } if shortNav
+                    background: none
+                    border-bottom: 1px solid var(--color-border-muted) if altNav
+                }
+
+                // Fixes discrepancies in different places.
+                > .Header-old > [class*='container-'] {
+                    { $resetFull } if shortNav
+                }
+            }
+
+            // Repository page header.
+            #repository-container-header.hide-full-screen {
+                padding-inline: 1rem
+
+                // Hide header background on light themes.
+                &[style*='page-header-bg'] { background: none i }
+
+                > div, > nav {
+                    { $resetFull }
+                }
+            }
+
+            // Alerts of various kinds.
+            #js-flash-container > div > div,
+            #notification-shelf > div,
+            // Sponsors alerts.
+            x-banner,
+            x-banner + div[style],
+            // Issues dashboard page.
+            #issues_dashboard.container-lg,
+            // Actions page. @upstream
+            split-page-layout,
+            // Footer width.
+            footer.width-full {
+                { $resetFull }
+            }
+
+            // Remove extra space. @upstream
+            button.js-flash-close > svg { margin-right: 0 }
+
+            // Organization page header.
+            .pagehead.orghead {
+                padding-inline:  1rem
+
+                // Content.
+                .container-lg,
+                .container-xl,
+                // Navigation.
+                nav ul, nav {
+                    { $resetFull }
+                }
+
+                // Tab content.
+                + .container-lg {
+                    max-width: unset
+
+                    > div {
+                        { $resetFull }
+                    }
+                }
+            }
+
+            // Main content.
+            main {
+                // More consistent padding.
+                .px-lg-5, .px-md-4 { padding-inline: 1rem i }
+
+                // Tabbed navigation on profile page.
+                .position-sticky > .container-xl { padding-inline: 0 i }
+            }
+        }
+    }
+}
+
+@-moz-document regexp('https?://github.com/sponsors/.+') {
+    main > div {
+        // Alerts.
+        &:not(.container-lg) {
+            > .container-lg {
+                { $resetFull }
+            }
+
+            // Add padding to "sponsors matching fund" bar.
+            &.flash + [style] { padding-inline: 1rem }
+        }
+
+        // Page content.
+        &.container-lg {
+            padding-inline: 1rem
+            max-width: 1280px
+        }
+    }
+}
+
+@-moz-document regexp('https?://github.com/.+/.+/(releases|tags)$') {
+    main {
+        .col-11 { width: 100% }
+        .col-md-9 { width: 83.3333333% }
+    }
+}
+
+@-moz-document domain("github.com") {
+    :root {
+        /* colors */
+        --color-fg-default: #09b700!important;
+        --color-fg-muted: #a4b700!important;
+        --color-accent-fg: #00abb7!important;
+        --color-btn-text: #b70000!important;
+        --color-btn-primary-text: black!important;
+        --color-header-text: #09b700!important;
+        --color-header-logo: #b74900!important;
+        /* background colors */
+        --color-page-header-bg: #0e0e0e!important;
+        --color-header-bg: #0e0e0e!important;
+        --color-canvas-default: #0e0e0e!important;
+        --color-canvas-subtle: #0e0e0e!important;
+        --color-canvas-overlay: #0e0e0e!important;
+        --color-canvas-inset: #0e0e0e!important;
+        --color-accent-emphasis: #0e0e0e!important;
+        --color-accent-subtle: #0e0e0e!important;
+        --color-bg-secondary: #0e0e0e!important;
+        --color-project-sidebar-bg: #0e0e0e!important;
+        --color-social-reaction-bg: #0e0e0e!important;
+        --color-calendar-graph-day-bg: #0e0e0e!important;
+        --color-notifications-row-bg: #0e0e0e!important;
+        --color-btn-outline-disabled-bg: #0e0e0e!important;
+        --color-btn-hover-bg: #0e0e0e!important;
+        --color-btn-active-bg: #0e0e0e!important;
+        --color-btn-counter-bg: #0e0e0e!important;
+        /* border colors */
+        --color-btn-active-border: #b74000!important;
+        --color-btn-primary-border: #b7ae00!important;
+        --color-btn-primary-hover-border: #b76e00!important;
+        --color-btn-primary-focus-border: #b70000!important;
+        --color-topic-tag-border: #424200!important;
+        --color-btn-border: #4f4f4f!important;
+        /* shadows */
+        --color-btn-primary-shadow: none!important;
+        --color-btn-primary-inset-shadow: none!important;
+        --color-btn-primary-selected-shadow: none!important;
+        --color-btn-primary-bg: #b76500!important;
+        --color-btn-primary-hover-bg: #b74000!important;
+        --color-btn-primary-selected-bg: #b72800!important;
+        --color-btn-primary-focus-bg: #b70000!important;
+        --color-btn-bg: #222!important;
+        --color-btn-shadow: none!important;
+        --color-btn-inset-shadow: none!important;
+        --color-shadow-small: none!important;
+        --color-primer-shadow-highlight: none!important;
+        --color-project-gradient-in: none!important;
+        --color-project-gradient-out: none!important;
+    }
+
+    a:hover {
+        color: var(--color-accent-fg)!important;
+    }
+
+    .topic-tag:hover,
+    .dropdown-item:hover,
+    .jump-to-suggestions *:hover {
+        color: var(--color-btn-primary-text)!important;
+    }
+}
+
+@-moz-document regexp("https?://github?.com(/.*)?") {
+    /* Variables */
+    i=!important;
+    t=!transparent;
+
+    :root {
+        --repository-icon: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAN1JREFUOE/tk8ENwjAMRb9BcKUbABN0BDICo7RHSiuCWsIx2QBGYARWYIOyARwBqUYJFFWiFC5IHMglUmw/O9824X7iVIuCaAVgUL413LmKg6G1U+kUZToHyAPxGgUODcECRCMVBy62AjAM5rlKQtlUQZRqCaLZH/C7GsD13/tgkFDfRuAIZvMG8K1BSvUWRH0741FmuFqFLXeS6jG1Wj4zCwLE0xek1N6pDbFMwk0dIMqM1ad3A/NexaFbuscuVDNaAIF3zhXkl9nqtKkHLLTpXuCW6tyBVNMweCXsFd/SnxH+P3j+AAAAAElFTkSuQmCC")
+    }
+
+    gridTemplate() {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    description() {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    noDescription() {
+        content: "No description provided"
+        color: var(--fgColor-muted, var(--color-fg-muted)) i;
+        font-style: italic;
+    }
+    
+    itemCard() {
+        padding: 16px i;
+        background-color: var(--color-canvas-default);
+        border-color: var(--color-border-default);
+        border-radius: var(--primer-borderRadius-medium, 6px);
+        border-style: solid;
+        border-width: var(--primer-borderWidth-thin, 1px);
+    }
+
+    if (starsTap=="Enabled") {
+        #user-starred-repos .mt-5 {
+            position: relative;
+            max-width: 100% i;
+
+            .col-lg-12 {
+                gridTemplate();
+                margin-top: 90px;
+
+                .py-4 {
+                    itemCard();
+                    if (stNoDescription) {
+                        > div:nth-child(3):not(:has(p[itemprop="description"]))::before {
+                            noDescription()
+                        }
+                    }
+                }
+
+                p[itemprop="description"] {
+                    width: 100%;
+                }
+                
+                > .position-relative {
+                    top: 0;
+                    position: absolute i;
+                    width: 100% i;
+                }
+
+                if starNewDesign {
+                    form > button > span {
+                        display: none i if hideStarText;
+                    }
+
+                    .mr-2 {
+                        margin-right: 0 i;
+                    }
+
+                    .BtnGroup-parent:first-child .BtnGroup-item {
+                        border-right-width: 1px;
+                        border-top-right-radius: 6px;
+                        border-bottom-right-radius: 6px;
+                    }
+
+                    details[id^="details-user-list"] {
+                        display: none i if dropDownMenu;
+                    }
+                }
+
+                a[href^="/sponsors/"] {
+                    display: none i if stHideSponsors;
+                }
+
+                span.text-normal {
+                    display: none i if stHideAuthor;
+                }
+            }
+        }
+    }
+
+    if (searchPage=="Enabled") {
+        /* Search  */
+        ul.repo-list {
+            gridTemplate();
+            margin-top: 16px;
+
+            * {
+                min-width: 0 i;
+            }
+
+            > li.py-4 {
+                itemCard();
+
+                p.mb-1 {
+                    if (not spfullDescription) {
+                        description()
+                    }
+                }
+
+                div.mr-3:has( > relative-time) {
+                    display: none if spHideUpdate;
+                }
+
+                div.d-flex > div.d-flex.flex-items-center.flex-justify-end.flex-shrink-0.flex-auto {
+                    display: none i if spHideSponsors;
+                }
+                
+                a[href^="/topics/"] {
+                    display: none i if spHideTopics;
+                }
+
+                a[href*="issue"] {
+                    display: none if spHideHelp;
+                }
+            }
+        }
+    }
+
+    if (resTap=="Enabled") {
+
+        /* Repositories tap */
+        #user-repositories-list > ul {
+            gridTemplate();
+            margin-top: 16px;
+
+            > li.py-4 {
+                itemCard();
+
+                min-width: 0;
+                padding: 16px i;
+                position: relative;
+
+                > .d-inline-block {
+
+                    /* Repository's name */
+                    div.d-inline-block.mb-1 {
+
+                        > h3 {
+                            font-size: 14px;
+                            if showRepository {
+                                &::before {
+                                    display: inline-block i;
+                                    position: relative;
+                                    top: 3px;
+                                    margin-right: 4px;
+                                    width: 16px;
+                                    height: 16px;
+                                    content: var(--repository-icon);
+                                }
+                            }
+                        }
+
+                        > span {
+                            display: none if hideForked;
+                        }
+                    }
+
+                    /* Description */
+                    p.col-9 {
+                        margin-bottom: 0 i;
+
+                        width: 100%;
+
+                        if (not fullDescription) {
+                            description()
+                        }
+                    }
+                    
+                    if (resNoDescription) {
+                        > div:nth-child(2):not(:has(p[itemprop="description"]))::before {
+                            noDescription()
+                        }
+                    }
+                    
+                    /* Hide Topics */
+                    > .topics-row-container {
+                        display: none i if hideTopics;
+                    }
+
+                    /* Bottom descriptions  */
+                    div.f6.color-fg-muted.mt-2 {
+                        > span:not(.ml-0) {
+                            display: none i if hideLicense;
+                        }
+
+                        a[href*="issue"] {
+                            display: none if hideHelp;
+                        }
+                    }
+                }
+
+                > .col-2 {
+                    display: contents i;
+
+                    .starring-container .unstarred, .starring-container.on .starred {
+                        margin-left: 0;
+                    }
+
+                    .starring-container {
+                        position: absolute;
+                        right: 16px;
+
+                        if (starNewDesign=="Enabled") {
+
+                            if dropDownMenu {
+                                .BtnGroup-parent .BtnGroup-item {
+                                    border-right-width: 1px;
+                                    border-top-right-radius: 6px;
+                                    border-bottom-right-radius: 6px;
+                                }
+
+                                details {
+                                    display: none i;
+                                }
+                            }
+
+                            if hideStarText {
+                                form > button > span {
+                                    display: none i;
+                                }
+
+                                .btn-sm .octicon,
+                                .starred .starred-button-icon {
+                                    margin-right: 0 i;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .col-lg-9 {
+                    width: 100%;
+                }
+
+                .col-9,
+                .f6 {
+                    font-size: 12px i;
+                }
+
+                /* Remove graph */
+                div.text-right.hide-lg.hide-md.hide-sm.hide-xs.flex-self-end,
+                div.text-right.hide-lg.hide-md.hide-sm.hide-xs.flex-self-end.mt-2 {
+                    display: none i;
+                }
+            }
+        }
+    }
+}
+
+@-moz-document regexp("^https?://((blog|gist|guides|docs|lab|launch-editor|raw|resources|status|support|developer)\\.)?github\\.com/((?!generated_pages/preview).)*$"), domain("www.githubstatus.com") {
+  :root {
+    --base-color: /*[[base-color]]*/;
+    --transparent: transparent;
+  }
+  body .pagehead-tabs-item.selected,
+  body .reponav .reponav-item.selected,
+  body .btn-link.selected,
+  body .tabnav-tab.selected,
+  body .tabnav-pr .tabnav-tab.selected,
+  body #graph_data .tab.selected,
+  body .select-menu-tabs .select-menu-tab-nav[aria-selected="true"],
+  body .tabnav-tab[aria-selected=true],
+  body .history-nav .button.border-color,
+  body .timeline-comment.current-user .tabnav-tab.selected,
+  body .tabnav-tab[aria-current] {
+    border-top-width: 3px !important;
+    border-top-color: var(--base-color) !important;
+  }
+  body .repo-filterer .repo-filter.filter-selected,
+  body .filter-selected,
+  body .sub-nav ul a.active,
+  body .IconNav-item.selected,
+  body .UnderlineNav-item:focus,
+  body .UnderlineNav-item:hover,
+  body .UnderlineNav-item.selected,
+  body .user-status-emoji-tab[role=tab][aria-selected=true],
+  body .SegmentedNav .subnav-link.selected,
+  body .SegmentedNav .subnav-link:hover,
+  body .UnderlineNav-item[role="tab"][aria-selected="true"],
+  body .UnderlineNav-item[aria-current]:not([aria-current="false"]),
+  body .PRC-selected {
+    border-bottom-color: var(--base-color) !important;
+  }
+  body .selected .security-nav-item {
+    box-shadow: inset 0 -3px 0 var(--base-color) !important;
+  }
+  body .menu-item.selected::before,
+  body .checks-index-item.selected::after,
+  body .SideNav-item[aria-current="page"]::before,
+  body .SideNav-item[aria-selected="true"]::before,
+  body .SideNav-item:focus::before,
+  body .SideNav-item:hover::before {
+    background-color: var(--base-color) !important;
+  }
+  body .js-current .standalone a,
+  body .sidebar-module .disable > a {
+    border-left-color: var(--base-color) !important;
+  }
+  body .home-nav-item.selected {
+    border-color: var(--base-color) !important;
+  }
+  @media (hover: hover) {
+    body .SelectMenu-tab[aria-selected="true"],
+    body .SelectMenu-tab[aria-selected="false"]:hover {
+      border-top-width: 3px;
+      border-top-color: var(--base-color) !important;
+    }
+  }
+  /* Start Mobile */
+  body[class="page-responsive"] .tabs > a.selected,
+  body[class="page-responsive"] a.reponav-item.selected {
+    border-top-width: 2px !important;
+    border-top-color: var(--base-color) !important;
+  }
+  body a.subnav-link:not(.subnav-primary).selected,
+  body a.subnav-link:not(.subnav-primary):hover {
+    border-bottom-color: var(--base-color) !important;
+  }
+  /* see issue https://github.com/StylishThemes/GitHub-Dark/issues/918 */
+  @media screen and (max-width: 768px) {
+    body .site-subnav .subnav-primary.selected,
+    body .site-subnav .subnav-primary:hover {
+      border-bottom-color: var(--transparent) !important;
+    }
+  }
+  /* End Mobile */
+  /* see issue https://github.com/StylishThemes/GitHub-Dark/issues/918 */
+  @media screen and (min-width: 1024px) {
+    body .site-subnav .subnav-primary.selected,
+    body .site-subnav .subnav-primary:hover {
+      border-bottom-color: var(--base-color) !important;
+    }
+  }
+  /* reset shifting selected tabs text down issue #16 */
+  body .reponav .reponav-item.selected {
+    padding-top: 7px !important;
+  }
+  body .hx_reponav.reponav .reponav-item.selected {
+    padding-top: 5px !important;
+    border-bottom: 0 !important;
+  }
+  body .hx_reponav.reponav .reponav-item {
+    padding-top: 7px !important;
+    border-bottom: 0 !important;
+  }
+  body .orgnav .pagehead-tabs-item.selected {
+    padding-top: 8px !important;
+  }
+  body .orgnav .pagehead-tabs-item {
+    border-bottom: 0 !important;
+  }
+}
