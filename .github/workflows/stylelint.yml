@@ -1,25 +1,14 @@
-name: CSS Lint
+name: Lint
 
 on:
   push:
-    paths:
-      - '**/*.css'
-      - '**/*.styl'
-      - '**/*.uso'
-      - '.stylelintrc.js'
-      - '.github/workflows/stylelint.yml'
+    branches: [main]
   pull_request:
-    paths:
-      - '**/*.css'
-      - '**/*.styl'
-      - '**/*.uso'
-      - '.stylelintrc.js'
-      - '.github/workflows/stylelint.yml'
+    branches: [main]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -29,8 +18,6 @@ jobs:
         with:
           node-version: 18
 
-      # If you already track package.json in the repo,
-      # just run `npm ci` here and delete the init check.
       - name: Install Stylelint + postcss-styl
         run: |
           test -f package.json || npm init -y
