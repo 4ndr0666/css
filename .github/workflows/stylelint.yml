@@ -45,6 +45,7 @@ jobs:
             }
           }
           CFG
-      
+
       - name: Run Stylelint
-        run: npx stylelint "**/*.{styl,uso,css}" --config /tmp/slint.json
+        run: 
+          npx stylelint "**/*.{styl,uso,css}" --config /tmp/slint.json
