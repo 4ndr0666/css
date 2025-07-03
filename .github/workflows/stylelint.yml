@@ -1,11 +1,27 @@
-name: "Lint Stylus with Stylelint"
-on: [ push, pull_request ]
+name: Lint Stylus with Stylelint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      # 1) checkout your code
+      - uses: actions/checkout@v3
+
+      # 2) ensure Node is available
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3) install your devDependencies from package.json
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      # 4) run Stylelint on all your Stylus and CSS files
       - name: Run Stylelint
-        run: npx stylelint "**/*.{css,styl,uso}" --config stylelint.config.json
+        run: npx stylelint "**/*.{styl,uso,css}" --config stylelint.config.json
