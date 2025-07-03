@@ -1,21 +1,40 @@
-name: Lint Stylus with Stylelint
+name: CSS Lint
 
-on: [ push, pull_request ]
+on:
+  push:
+    paths:
+      - '**/*.css'
+      - '**/*.styl'
+      - '**/*.uso'
+      - '.stylelintrc.js'
+      - '.github/workflows/stylelint.yml'
+  pull_request:
+    paths:
+      - '**/*.css'
+      - '**/*.styl'
+      - '**/*.uso'
+      - '.stylelintrc.js'
+      - '.github/workflows/stylelint.yml'
 
 jobs:
   lint:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
-        with: { node-version: '18' }
+      - name: Set up Node 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
+      # If you already track package.json in the repo,
+      # just run `npm ci` here and delete the init check.
       - name: Install Stylelint + postcss-styl
         run: |
           test -f package.json || npm init -y
           npm install --save-dev stylelint@14 postcss-styl@0.0.3
 
       - name: Run Stylelint
-        run: 
-          npx stylelint "**/*.{styl,uso,css}" --config /tmp/slint.json
+        run: npx stylelint "**/*.{styl,uso,css}"
