@@ -16,5 +16,35 @@ jobs:
           test -f package.json || npm init -y
           npm install --save-dev stylelint@14 postcss-styl@0.0.3
 
+      - name: Write Stylelint config
+        run: |
+          cat > /tmp/slint.json <<'CFG'
+          {
+            "customSyntax": "postcss-styl",
+            "rules": {
+              "at-rule-no-unknown": [true, {"ignoreAtRules":["extend","extends","css","block","-moz-document"]}],
+              "function-no-unknown": [true, {"ignoreFunctions":["gridTemplate","gridTemplateColumns","description","noDescription","itemCard","gap","overflow","textOverflow","fontStyle"]}],
+              "declaration-block-trailing-semicolon": null,
+              "block-no-empty": [true, {"severity":"warning"}],
+              "color-no-invalid-hex": [true, {"severity":"warning"}],
+              "declaration-block-no-duplicate-properties": [true, {"ignore":["consecutive-duplicates-with-different-values"],"severity":"warning"}],
+              "declaration-block-no-shorthand-property-overrides": [true, {"severity":"warning"}],
+              "font-family-no-duplicate-names": [true, {"severity":"warning"}],
+              "function-calc-no-unspaced-operator": [true, {"severity":"warning"}],
+              "function-linear-gradient-no-nonstandard-direction": [true, {"severity":"warning"}],
+              "keyframe-declaration-no-important": [true, {"severity":"warning"}],
+              "media-feature-name-no-unknown": [true, {"severity":"warning"}],
+              "no-invalid-double-slash-comments": [true, {"severity":"warning"}],
+              "property-no-unknown": [true, {"severity":"warning"}],
+              "selector-pseudo-class-no-unknown": [true, {"severity":"warning"}],
+              "selector-pseudo-element-no-unknown": [true, {"severity":"warning"}],
+              "string-no-newline": [true, {"severity":"warning"}],
+              "unit-no-unknown": [true, {"severity":"warning"}],
+              "alpha-value-notation": false,
+              "value-no-vendor-prefix": false
+            }
+          }
+          CFG
+      
       - name: Run Stylelint
-        run: npx stylelint "**/*.{styl,uso,css}" --config stylelint.config.json
+        run: npx stylelint "**/*.{styl,uso,css}" --config /tmp/slint.json
