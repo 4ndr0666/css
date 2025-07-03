@@ -18,11 +18,11 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Bootstrap npm & install Stylelint
+      - name: Install Stylelint deps
         run: |
           npm init -y
-          npm install --save-dev stylelint stylelint-processor-stylus postcss-styl
-
+          npm install --save-dev stylelint@14 stylelint-processor-stylus postcss-styl@0.0.3
+     
       - name: Run Stylelint
         run: |
           npx stylelint "**/*.{styl,uso,css}" --config stylelint.config.json
